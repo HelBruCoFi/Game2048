@@ -1,0 +1,20 @@
+Game works:
+1. ask the size of the table n*n, how much n squares
+2. initiate game with 2 cells filled
+3. the player can move up/left/down/right -> WASD
+4. every move fills a new square with a 2 or a 4, 75% prob. for 2 and 25% prob. for 4
+5. when the player does a move, for all the squares, following the direction of the play,
+	if there is another square with the same number, they join together and its value doubles
+6. the game ends when the player has one square with the number 2048 in it, or if there is no possible movement that joins 2 squares
+
+7. ask the player what's the goal number, must be a multiple of 2: [..., 64, 128, 256, 512, 1024, 2048]
+8. after the player wins, ask if he wants to continue playing that game or begin a new one
+9. allow the player to go back 1 play
+
+
+
+
+
+
+methods:
+save the state of the last play
