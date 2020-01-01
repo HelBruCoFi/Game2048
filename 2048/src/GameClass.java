@@ -61,15 +61,15 @@ public class GameClass implements Game {
 			} catch (PointlessMovementException e1) {
 				possibleMovements--;
 				try {
-					moveUp(aux, false);
+					moveLeft(aux, false);
 				} catch (PointlessMovementException e2) {
 					possibleMovements--;
 					try {
-						moveUp(aux, false);
+						moveDown(aux, false);
 					} catch (PointlessMovementException e3) {
 						possibleMovements--;
 						try {
-							moveUp(aux, false);
+							moveRight(aux, false);
 						} catch (PointlessMovementException e) {
 							possibleMovements--;
 						}

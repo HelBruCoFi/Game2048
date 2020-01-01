@@ -29,7 +29,7 @@ public class Main {
 
 		String comm = getCommand(in);
 
-		while (!Commands.valueOf(comm).equals(Commands.XS)) {
+		while (!comm.equals(Commands.XS.toString())) {
 
 			try {
 				switch (Commands.valueOf(comm)) {
@@ -40,13 +40,16 @@ public class Main {
 					processMovement(comm, game);
 					break;
 				default:
-					System.out.println(UNKNOWN_COMMAND);
+					break;
 				}
 				System.out.println();
 				System.out.println("Enter your move:");
 				comm = getCommand(in);
+			} catch (IllegalArgumentException e) {
+				System.out.println("Wrong command, try again.");
+				comm = getCommand(in);
 			} catch (GameLostException e) {
-				System.out.println("You lost. This is the final result:");
+				System.out.println("You lost. This is how you finished.");
 				printTable(game);
 				break;
 			}
