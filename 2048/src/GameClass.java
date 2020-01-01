@@ -165,7 +165,42 @@ public class GameClass implements Game {
 	private int[][] moveLeft(int[][] table, boolean playerMove) throws PointlessMovementException {
 		boolean hadEffect = false;
 
-		
+		for (int i = 0; i < size; i++) {
+			// move all non zero cells left
+			for (int j = 0; j < size - 1; j++) {
+				if (table[i][j] == 0) {
+					int k = j;
+					boolean hasNumbers = false;
+					while (table[i][j] == 0 && k < size - 1) {
+						// if number, move all one cell up
+						if (table[i][k + 1] != 0) {
+							hasNumbers = true;
+							table[i][k] = table[i][k + 1];
+							table[i][k + 1] = 0;
+							hadEffect = true;
+						}
+						k++;
+						// repeat until the leftmost position i is filled
+						if (k == size - 1 && hasNumbers)
+							k = j;
+					}
+				}
+			}
+			// sum common cells
+			for (int j = 0; j < size - 1; j++) {
+				if (table[i][j] != 0 && table[i][j] == table[i][j + 1]) {
+					table[i][j] *= 2;
+					table[i][j + 1] = 0;
+					if (playerMove)
+						emptyCells++;
+					for (int k = j + 1; k < size - 1; k++) { // move the rest one cell up
+						table[i][k] = table[i][k + 1];
+						table[i][k + 1] = 0;
+					}
+					hadEffect = true;
+				}
+			}
+		}
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
