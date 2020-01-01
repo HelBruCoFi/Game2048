@@ -94,7 +94,7 @@ public class Main {
 		System.out.println("Current table:");
 		for (int i = 0; i < length; i++) {
 			for (int j = 0; j < length - 1; j++)
-				System.out.print(table[i][j] + " ");
+				System.out.print(table[i][j] + " \t");
 			System.out.println(table[i][length - 1]);
 		}
 	}
