@@ -172,7 +172,7 @@ public class GameClass implements Game {
 					int k = j;
 					boolean hasNumbers = false;
 					while (table[i][j] == 0 && k < size - 1) {
-						// if number, move all one cell up
+						// if number, move all one cell to the left
 						if (table[i][k + 1] != 0) {
 							hasNumbers = true;
 							table[i][k] = table[i][k + 1];
@@ -180,7 +180,7 @@ public class GameClass implements Game {
 							hadEffect = true;
 						}
 						k++;
-						// repeat until the leftmost position i is filled
+						// repeat until the leftmost position j is filled
 						if (k == size - 1 && hasNumbers)
 							k = j;
 					}
@@ -193,7 +193,7 @@ public class GameClass implements Game {
 					table[i][j + 1] = 0;
 					if (playerMove)
 						emptyCells++;
-					for (int k = j + 1; k < size - 1; k++) { // move the rest one cell up
+					for (int k = j + 1; k < size - 1; k++) { // move the rest one cell to the left
 						table[i][k] = table[i][k + 1];
 						table[i][k + 1] = 0;
 					}
@@ -217,7 +217,7 @@ public class GameClass implements Game {
 					int k = i;
 					boolean hasNumbers = false;
 					while (table[i][j] == 0 && k > 0) {
-						// if number, move all one cell up
+						// if number, move all one cell down
 						if (table[k - 1][j] != 0) {
 							hasNumbers = true;
 							table[k][j] = table[k - 1][j];
@@ -254,6 +254,43 @@ public class GameClass implements Game {
 
 	private int[][] moveRight(int[][] table, boolean playerMove) throws PointlessMovementException {
 		boolean hadEffect = false;
+
+		for (int i = 0; i < size; i++) {
+			// move all non zero cells right
+			for (int j = size - 1; j > 0; j--) {
+				if (table[i][j] == 0) {
+					int k = j;
+					boolean hasNumbers = false;
+					while (table[i][j] == 0 && k > 0) {
+						// if number, move all one cell to the right
+						if (table[i][k - 1] != 0) {
+							hasNumbers = true;
+							table[i][k] = table[i][k - 1];
+							table[i][k - 1] = 0;
+							hadEffect = true;
+						}
+						k--;
+						// repeat until the rightmost position j is filled
+						if (k == 0 && hasNumbers)
+							k = j;
+					}
+				}
+			}
+			// sum common cells
+			for (int j = size - 1; j > 0; j--) {
+				if (table[i][j] != 0 && table[i][j] == table[i][j - 1]) {
+					table[i][j] *= 2;
+					table[i][j - 1] = 0;
+					if (playerMove)
+						emptyCells++;
+					for (int k = j - 1; k > 0; k--) { // move the rest one cell to the right
+						table[i][k] = table[i][k - 1];
+						table[i][k - 1] = 0;
+					}
+					hadEffect = true;
+				}
+			}
+		}
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
