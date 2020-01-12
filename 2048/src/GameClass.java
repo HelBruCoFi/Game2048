@@ -49,7 +49,7 @@ public class GameClass implements Game {
 		fillEmptyWith2or4();
 	}
 
-	private boolean gameIsLost() {
+	private boolean gameIsLost1() {
 		int[][] aux = new int[size][];
 		for (int i = 0; i < size; i++)
 			aux[i] = table[i].clone();
@@ -82,6 +82,18 @@ public class GameClass implements Game {
 		}
 
 		return false;
+	}
+
+	private boolean gameIsLost() {
+		if (emptyCells != 0)
+			return false;
+
+		for (int i = 0; i < size - 1; i++)
+			for (int j = 0; j < size - 1; j++)
+				if (table[i][j] == table[i + 1][j] || table[i][j] == table[i][j + 1])
+					return false;
+
+		return true;
 	}
 
 	private void fillEmptyWith2or4() {
