@@ -110,6 +110,10 @@ public class Main {
 	private static Game load(Scanner in) {
 		System.out.println("Enter the size of the table for the game:");
 		int size = Integer.parseInt(getCommand(in));
+		while(size < 3) {
+			System.out.println("Insert a number > 3, please.");
+			size = Integer.parseInt(getCommand(in));
+		}
 		Game game = new GameClass(size);
 		System.out.println("Game instructions:");
 		System.out.println("W - Move up");
