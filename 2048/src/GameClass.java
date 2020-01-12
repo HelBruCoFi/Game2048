@@ -25,16 +25,16 @@ public class GameClass implements Game {
 		int[][] newTable = null;
 		switch (direction) {
 		case 'W':
-			newTable = moveUp(table, true);
+			newTable = moveUp(table);
 			break;
 		case 'A':
-			newTable = moveLeft(table, true);
+			newTable = moveLeft(table);
 			break;
 		case 'S':
-			newTable = moveDown(table, true);
+			newTable = moveDown(table);
 			break;
 		case 'D':
-			newTable = moveRight(table, true);
+			newTable = moveRight(table);
 			break;
 		}
 		table = newTable;
@@ -47,41 +47,6 @@ public class GameClass implements Game {
 	private void generateTable(int size) {
 		fillEmptyWith2or4();
 		fillEmptyWith2or4();
-	}
-
-	private boolean gameIsLost1() {
-		int[][] aux = new int[size][];
-		for (int i = 0; i < size; i++)
-			aux[i] = table[i].clone();
-
-		int possibleMovements = 4;
-		if (emptyCells == 0) {
-			try {
-				moveUp(aux, false);
-			} catch (PointlessMovementException e1) {
-				possibleMovements--;
-				try {
-					moveLeft(aux, false);
-				} catch (PointlessMovementException e2) {
-					possibleMovements--;
-					try {
-						moveDown(aux, false);
-					} catch (PointlessMovementException e3) {
-						possibleMovements--;
-						try {
-							moveRight(aux, false);
-						} catch (PointlessMovementException e) {
-							possibleMovements--;
-						}
-					}
-				}
-			}
-
-			if (possibleMovements == 0)
-				return true;
-		}
-
-		return false;
 	}
 
 	private boolean gameIsLost() {
@@ -129,7 +94,15 @@ public class GameClass implements Game {
 			return 4;
 	}
 
-	private int[][] moveUp(int[][] table, boolean playerMove) throws PointlessMovementException {
+	/**
+	 * Moves all the pieces up and sum all the common 2 pieces, one above the other
+	 * without others in between
+	 * 
+	 * @param table
+	 * @return
+	 * @throws PointlessMovementException
+	 */
+	private int[][] moveUp(int[][] table) throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int j = 0; j < size; j++) {
@@ -158,8 +131,7 @@ public class GameClass implements Game {
 				if (table[i][j] != 0 && table[i][j] == table[i + 1][j]) {
 					table[i][j] *= 2;
 					table[i + 1][j] = 0;
-					if (playerMove)
-						emptyCells++;
+					emptyCells++;
 					for (int k = i + 1; k < size - 1; k++) { // move the rest one cell up
 						table[k][j] = table[k + 1][j];
 						table[k + 1][j] = 0;
@@ -174,7 +146,7 @@ public class GameClass implements Game {
 		return table;
 	}
 
-	private int[][] moveLeft(int[][] table, boolean playerMove) throws PointlessMovementException {
+	private int[][] moveLeft(int[][] table) throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int i = 0; i < size; i++) {
@@ -203,8 +175,7 @@ public class GameClass implements Game {
 				if (table[i][j] != 0 && table[i][j] == table[i][j + 1]) {
 					table[i][j] *= 2;
 					table[i][j + 1] = 0;
-					if (playerMove)
-						emptyCells++;
+					emptyCells++;
 					for (int k = j + 1; k < size - 1; k++) { // move the rest one cell to the left
 						table[i][k] = table[i][k + 1];
 						table[i][k + 1] = 0;
@@ -219,7 +190,7 @@ public class GameClass implements Game {
 		return table;
 	}
 
-	private int[][] moveDown(int[][] table, boolean playerMove) throws PointlessMovementException {
+	private int[][] moveDown(int[][] table) throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int j = 0; j < size; j++) {
@@ -248,8 +219,7 @@ public class GameClass implements Game {
 				if (table[i][j] != 0 && table[i][j] == table[i - 1][j]) {
 					table[i][j] *= 2;
 					table[i - 1][j] = 0;
-					if (playerMove)
-						emptyCells++;
+					emptyCells++;
 					for (int k = i - 1; k > 0; k--) { // move the rest one cell down
 						table[k][j] = table[k - 1][j];
 						table[k - 1][j] = 0;
@@ -264,7 +234,7 @@ public class GameClass implements Game {
 		return table;
 	}
 
-	private int[][] moveRight(int[][] table, boolean playerMove) throws PointlessMovementException {
+	private int[][] moveRight(int[][] table) throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int i = 0; i < size; i++) {
@@ -293,8 +263,7 @@ public class GameClass implements Game {
 				if (table[i][j] != 0 && table[i][j] == table[i][j - 1]) {
 					table[i][j] *= 2;
 					table[i][j - 1] = 0;
-					if (playerMove)
-						emptyCells++;
+					emptyCells++;
 					for (int k = j - 1; k > 0; k--) { // move the rest one cell to the right
 						table[i][k] = table[i][k - 1];
 						table[i][k - 1] = 0;
