@@ -12,7 +12,7 @@ public class GameClass implements Game {
 		this.size = size;
 		emptyCells = size * size;
 		table = new int[size][size];
-		generateTable(size);
+		generateTable();
 	}
 
 	@Override
@@ -22,33 +22,38 @@ public class GameClass implements Game {
 
 	@Override
 	public void newMove(char direction) throws GameLostException, PointlessMovementException {
-		int[][] newTable = null;
 		switch (direction) {
 		case 'W':
-			newTable = moveUp(table);
+			moveUp();
 			break;
 		case 'A':
-			newTable = moveLeft(table);
+			moveLeft();
 			break;
 		case 'S':
-			newTable = moveDown(table);
+			moveDown();
 			break;
 		case 'D':
-			newTable = moveRight(table);
+			moveRight();
 			break;
 		}
-		table = newTable;
 		fillEmptyWith2or4();
 
 		if (gameIsLost())
 			throw new GameLostException();
 	}
 
-	private void generateTable(int size) {
+	private void generateTable() {
 		fillEmptyWith2or4();
 		fillEmptyWith2or4();
 	}
 
+	/**
+	 * Checks if the game is lost after the player does a movement. If there are
+	 * empty cells, the game is not lost. If there aren't empty cells, checks if
+	 * there is any possible sum of two common cells, which will make a move valid
+	 * 
+	 * @return true if the game is lost, false otherwise
+	 */
 	private boolean gameIsLost() {
 		if (emptyCells != 0)
 			return false;
@@ -61,6 +66,9 @@ public class GameClass implements Game {
 		return true;
 	}
 
+	/**
+	 * Calculate a random empty position to fill with a 2 or a 4
+	 */
 	private void fillEmptyWith2or4() {
 		int countEmpty = 0;
 		int cellToFill = ThreadLocalRandom.current().nextInt(1, emptyCells + 1);
@@ -70,7 +78,7 @@ public class GameClass implements Game {
 					countEmpty++;
 					if (countEmpty == cellToFill) {
 						table[i][j] = add2or4();
-						System.out.printf("filled (%d,%d) with %d\n", i, j, table[i][j]);
+						// System.out.printf("filled (%d,%d) with %d\n", i, j, table[i][j]);
 						i = size;
 						break;
 					}
@@ -81,8 +89,8 @@ public class GameClass implements Game {
 	}
 
 	/**
-	 * Adds a 2 or 4 in a empty cell of the table. A 2 is generated with 75% chance.
-	 * and a 4 with 25% chance.
+	 * Auxiliary method to get the new number to be added in an empty cell. A 2 is
+	 * generated with 75% chance and a 4 with 25% chance.
 	 * 
 	 * @return 2 or 4
 	 */
@@ -98,11 +106,9 @@ public class GameClass implements Game {
 	 * Moves all the pieces up and sum all the common 2 pieces, one above the other
 	 * without others in between
 	 * 
-	 * @param table
-	 * @return
 	 * @throws PointlessMovementException
 	 */
-	private int[][] moveUp(int[][] table) throws PointlessMovementException {
+	private void moveUp() throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int j = 0; j < size; j++) {
@@ -143,10 +149,15 @@ public class GameClass implements Game {
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
-		return table;
 	}
 
-	private int[][] moveLeft(int[][] table) throws PointlessMovementException {
+	/**
+	 * Moves all the pieces left and sum all the common 2 pieces, one next to the
+	 * other without others in between
+	 * 
+	 * @throws PointlessMovementException
+	 */
+	private void moveLeft() throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int i = 0; i < size; i++) {
@@ -187,10 +198,15 @@ public class GameClass implements Game {
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
-		return table;
 	}
 
-	private int[][] moveDown(int[][] table) throws PointlessMovementException {
+	/**
+	 * Moves all the pieces down and sum all the common 2 pieces, one above the
+	 * other without others in between
+	 * 
+	 * @throws PointlessMovementException
+	 */
+	private void moveDown() throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int j = 0; j < size; j++) {
@@ -231,10 +247,15 @@ public class GameClass implements Game {
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
-		return table;
 	}
 
-	private int[][] moveRight(int[][] table) throws PointlessMovementException {
+	/**
+	 * Moves all the pieces right and sum all the common 2 pieces, one next to the
+	 * other without others in between
+	 * 
+	 * @throws PointlessMovementException
+	 */
+	private void moveRight() throws PointlessMovementException {
 		boolean hadEffect = false;
 
 		for (int i = 0; i < size; i++) {
@@ -275,7 +296,6 @@ public class GameClass implements Game {
 
 		if (!hadEffect)
 			throw new PointlessMovementException();
-		return table;
 	}
 
 }
